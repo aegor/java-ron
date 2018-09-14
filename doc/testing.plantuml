@@ -1,0 +1,25 @@
+@startuml
+
+interface "SWARMDB" as DB
+
+DB <- [SWARM jar]
+[SWARM jar] <- [PureJarServer]
+[PureJarServer] <.. TransportMock : use
+TransportMock = [PureJarClient]
+[PureJarClient] <.. Tests
+
+note left of TransportMock
+Имитация произвольного
+транспорта
+end note
+
+note top of [SWARM jar]
+ SWARMDB native adapter
+end note
+
+note top of [PureJarServer]
+ Request adapter
+ from PureJarServer to SWARMDB native adapter
+end note
+
+@enduml
