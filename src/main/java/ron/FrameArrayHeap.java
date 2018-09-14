@@ -21,7 +21,7 @@ public class FrameArrayHeap implements IHeap {
 	}
 
 	private boolean less(int i, int j) {
-		var c = this.primary.compare(this.iters[i], this.iters[j]);
+		int c = this.primary.compare(this.iters[i], this.iters[j]);
 		if (c == 0) {
 			if (this.secondary != null) {
 				c = this.secondary.compare(this.iters[i], this.iters[j]);
@@ -34,8 +34,8 @@ public class FrameArrayHeap implements IHeap {
 	}
 
 	private void sink(int i) {
-		var to = i;
-		var j = i << 1;
+		int to = i;
+		int j = i << 1;
 		if (j < this.iters.length && this.less(j, i)) {
 			to = j;
 		}
@@ -50,7 +50,7 @@ public class FrameArrayHeap implements IHeap {
 	}
 
 	private void raise(int i) {
-		var j = i >> 1;
+		int j = i >> 1;
 		if (j > 0 && this.less(i, j)) {
 			this.swap(i, j);
 			if (j > 1) {
@@ -75,7 +75,7 @@ public class FrameArrayHeap implements IHeap {
 
 	@Override
 	public void putAll(Batch b) {
-		for (var i = 0; i < b.frames.length; i++) {
+		for (int i = 0; i < b.frames.length; i++) {
 			this.put(b.frames[i]);
 		}
 	}
@@ -89,7 +89,7 @@ public class FrameArrayHeap implements IHeap {
 			}
 		}
 		if (!i.eof() && !i.isHeader()) {
-			var at = this.iters.length;
+			int at = this.iters.length;
 			this.iters = Frame.append(this.iters, i);
 			this.raise(at);
 		}
@@ -121,12 +121,12 @@ public class FrameArrayHeap implements IHeap {
 
 	private void listEqs(int at, List<Integer> eqs) {
 		eqs.add(at);
-		var l = at << 1;
+		int l = at << 1;
 		if (l < this.iters.length) {
 			if (0 == this.primary.compare(this.iters[1], this.iters[l])) {
 				this.listEqs(l, eqs);
 			}
-			var r = l | 1;
+			int r = l | 1;
 			if (r < this.iters.length) {
 				if (0 == this.primary.compare(this.iters[1], this.iters[r])) {
 					this.listEqs(r, eqs);
@@ -142,7 +142,7 @@ public class FrameArrayHeap implements IHeap {
 
 	@Override
 	public Frame frame() {
-		var cur = Frame.makeFrame(128);
+		Frame cur = Frame.makeFrame(128);
 		for (;!this.eof();) {
 			cur.append(this.current());
 			this.next();
@@ -169,12 +169,12 @@ public class FrameArrayHeap implements IHeap {
 	@Override
 	public Frame nextPrim() {
 //		var _eqs [16]int
-		var eqs = new ArrayList<Integer>();
+		List<Integer> eqs = new ArrayList<Integer>();
 		this.listEqs(1, eqs);
 		if (eqs.size() > 1) {
 			eqs.sort(Comparator.naturalOrder());
 		}
-		for (var i = eqs.size() - 1; i >= 0; i--) {
+		for (int i = eqs.size() - 1; i >= 0; i--) {
 			this.next(eqs.get(i));
 			this.sink(eqs.get(i));
 		}

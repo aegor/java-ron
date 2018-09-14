@@ -21,7 +21,7 @@ public class FrameHeap implements IHeap {
 
 	public static Comparator<Frame> comparator(Comparator<Frame> primary, Comparator<Frame> secondary) {
 		return (a, b) -> {
-			var c = primary.compare(a, b);
+			int c = primary.compare(a, b);
 			if (c == 0) {
 				if (secondary != null) {
 					return secondary.compare(a, b);
@@ -38,7 +38,7 @@ public class FrameHeap implements IHeap {
 	}
 
 	public void putAll(Batch b) {
-		for (var i = 0; i < b.frames.length; i++) {
+		for (int i = 0; i < b.frames.length; i++) {
 			this.put(b.frames[i]);
 		}
 	}

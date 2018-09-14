@@ -18,10 +18,10 @@ public class RgaTest {
 
 	@Test
 	public void TestRGA_Mapper() {
-		var frame = "*rga#1UQ8p+bart@1UQ8yk+lisa!" +
+		String frame = "*rga#1UQ8p+bart@1UQ8yk+lisa!" +
 				"@(s+bart'H'@[r'e'@(t'l'@[T'l'@[i'o'" +
 				"@(w+lisa' '@(x'w'@(y'o'@[1'r'@{a'l'@[2'd'@[k'!'";
-		var right = "Hello world!";
+		String right = "Hello world!";
 		TxtMapper txt = new TxtMapperImpl();
 		String hello = txt.map(new Batch(Parse.parseFrameString(frame)));
 		if (!hello.equals(right)) {
@@ -31,7 +31,7 @@ public class RgaTest {
 
 	@Test
 	public void TestRGA() {
-		var frameStr = "*rga#1UQ8p+bart@1UQ8yk+lisa!" +
+		String frameStr = "*rga#1UQ8p+bart@1UQ8yk+lisa!" +
 				"@(s+bart'H'@[r'e'@(t'l'@[T'l'@[i'o'" +
 				"@(w+lisa' '@(x'w'@(y'o'@[1'r'@{a'l'@[2'd'@[k'!'";
 		final Frame frame = Parse.parseFrameString(frameStr);
@@ -42,7 +42,7 @@ public class RgaTest {
 	@Test
 	public void TestHelloWorld() {
 
-		var src = new String[]{
+		String[] src = new String[]{
 				"*rga#1UQ8p+bart!",
 				"*rga#1UQ8p+bart@1UQ8s+bart:0'H'",
 				"*rga#1UQ8p+bart@1UQ8sr+bart:1UQ8s+bart'e'",
@@ -59,13 +59,13 @@ public class RgaTest {
 		};
 
 //		var count = 1000;
-		var count = 1;
+		int count = 1;
 
-		for (var i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) {
 
 //			seed := time.Now().UnixNano()
 			//fmt.Printf("ACI test seed %d\n", seed)
-			var seed = 1512325615325939065L;
+			long seed = 1512325615325939065L;
 //			r := rand.New(rand.NewSource(seed))
 
 //			data := make([]string, 13)
@@ -73,14 +73,14 @@ public class RgaTest {
 //			for i, v := range perm { // this way we test COMMUTATIVITY
 //				data[v] = src[i]
 //			}
-			var frames = new Frame[src.length];
-			for (var j = 0; j < src.length; j++) {
+			Frame[] frames = new Frame[src.length];
+			for (int j = 0; j < src.length; j++) {
 				frames[j] = Parse.parseFrameString(src[j]);
 			}
 
-			var rga = Rga.makeRGAReducer();
+			Reducer rga = Rga.makeRGAReducer();
 
-			var frame = rga.reduce(new Batch(frames));
+			Frame frame = rga.reduce(new Batch(frames));
 
 //			for (; frames.length > 1;) {
 //				from := int(r.Uint32()) % len(frames)
@@ -100,10 +100,10 @@ public class RgaTest {
 //				frames = f
 //			}
 
-			var right = "Hello world!";
-			var txt = new TxtMapperImpl();
+			String right = "Hello world!";
+			TxtMapperImpl txt = new TxtMapperImpl();
 //			hello := txt.Map(ron.Batch{frames[0]})
-			var hello = txt.map(new Batch(frame));
+			String hello = txt.map(new Batch(frame));
 			if (!hello.equals(right)) {
 				Assert.fail(String.format("'%s' != '%s', seed %d", hello, right, seed));
 			} else {

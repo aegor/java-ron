@@ -27,7 +27,7 @@ public class Rga implements Reducer {
 	private static UUID RM_UUID = UUID.newName("rm");
 
 	public static Reducer makeRGAReducer() {
-		var rga = new Rga();
+		Rga rga = new Rga();
 		rga.active = FrameArrayHeap.makeFrameHeap(FrameArrayHeap.eventComparatorDesc(), FrameArrayHeap.refComparatorDesc(), 2);
 		rga.rms = new HashMap<>();
 		rga.ins = new Frame[32];
@@ -67,17 +67,17 @@ public class Rga implements Reducer {
 	// Reduce RGA frames
 	@Override
 	public Frame reduce(Batch batch) {
-		var rdtype = batch.frames[0].type();
-		var object = batch.frames[0].object();
-		var event  = batch.frames[batch.frames.length - 1].event();
+		UUID rdtype = batch.frames[0].type();
+		UUID object = batch.frames[0].object();
+		UUID event  = batch.frames[batch.frames.length - 1].event();
 //		// multiframe parts must be atomically applied, hence same version id
 		Spec spec = Frame.newSpec(rdtype, object, event, ZERO_UUID);
 		Frame[] _produce = new Frame[4];
 		Batch produce = new Batch(Frame.slice(_produce, 0, 0));
 		Frame[] pending = Frame.slice(this.ins, 0, 0);
 
-		for (var k = 0; k < batch.frames.length; k++) {
-			var b = batch.frames[k];
+		for (int k = 0; k < batch.frames.length; k++) {
+			Frame b = batch.frames[k];
 			if (!b.isHeader()) {
 				if (b.count() == 0) {
 					addMax(this.rms, b.event(), b.ref());
@@ -100,14 +100,14 @@ public class Rga implements Reducer {
 
 		Arrays.sort(pending, refOrderedBatch());
 //		System.out.println(Arrays.stream(pending).map(Frame::string).reduce((s, s2) -> s + "\n" + s2).get());
-		for (var i = pending.length - 1; i >= 0; i--) {
+		for (int i = pending.length - 1; i >= 0; i--) {
 			this.traps.put(pending[i].ref(),  i);
 			// 	rga.traps[pending[i].Ref()] = i
 //			System.out.printf("%s to %d\n", pending[i].ref().string(), i);
 		}
 //		System.out.println(this.traps);
 
-		for (var i = 0; i < pending.length;) {
+		for (int i = 0; i < pending.length;) {
 			final Frame result = Frame.makeFrame(1024);
 
 			final UUID at = pending[i].ref();
@@ -144,8 +144,8 @@ public class Rga implements Reducer {
 				result.appendReducedRef(ref, op);
 
 				this.active.nextPrim();
-
-				for (var t = this.traps.get(ev); (t != null) && t < pending.length; t++) {
+				// TODO need to be optimizez with int
+				for (Integer t = this.traps.get(ev); (t != null) && t < pending.length; t++) {
 					if (!pending[t].eof() && pending[t].ref().equals(ev)) {
 						this.active.putFrame(pending[t]);
 //						System.out.printf("put active %s, ref %s\n", pending[i], pending[i].ref().string());
@@ -172,7 +172,7 @@ public class Rga implements Reducer {
 			// take removed event ids
 			UUID[] refs = new UUID[this.rms.size()];
 			int k = 0;
-			for (var ref : this.rms.keySet()) {
+			for (UUID ref : this.rms.keySet()) {
 //				refs = Frame.append(refs, ref);
 				refs[k] = ref;
 				k++;
@@ -180,7 +180,7 @@ public class Rga implements Reducer {
 			Arrays.sort(refs, revOrderedUUIDSlice());
 //			System.out.println(Arrays.toString(refs));
 //			// scan, append
-			for (var key : refs) {
+			for (UUID key : refs) {
 				spec.setRef(key);
 				spec.setEvent(this.rms.get(key));
 				result.appendEmptyReducedOp(spec);
@@ -197,7 +197,7 @@ public class Rga implements Reducer {
 		this.traps.clear();
 
 		int l = produce.frames.length;
-		for (var i = 0; i < pending.length; i++) {
+		for (int i = 0; i < pending.length; i++) {
 			if (!pending[i].eof()) {
 				produce = new Batch(Frame.append(produce.frames, pending[i].split().frames));
 			}

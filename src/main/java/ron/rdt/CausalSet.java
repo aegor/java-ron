@@ -28,8 +28,8 @@ public class CausalSet implements Reducer {
 	public static Comparator<Frame> setComparator() {
 
 		return (af, bf) -> {
-			var a = af.event();
-			var b = bf.event();
+			UUID a = af.event();
+			UUID b = bf.event();
 			if (!af.ref().isZero()) {
 				a = af.ref();
 			}
@@ -47,8 +47,8 @@ public class CausalSet implements Reducer {
 
 	@Override
 	public Frame reduce(Batch batch) {
-		var ret = Frame.makeFrame(batch.frames.length);
-		var ref = DELTA_UUID;
+		Frame ret = Frame.makeFrame(batch.frames.length);
+		UUID ref = DELTA_UUID;
 		if (this.alwaysFull || batch.hasFullState()) {
 			ref = UUID.ZERO_UUID;
 		}

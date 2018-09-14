@@ -10,7 +10,7 @@ public class OpTest {
 
 	@Test
 	public void TestParseOp() {
-		var frame = "*lww#test-author@(time-origin:loc=1''>test";
+		String frame = "*lww#test-author@(time-origin:loc=1''>test";
 		Frame iter = Parse.parseFrameString(frame);
 		if (!iter.type().string().equals("lww")) {
 			Assert.fail(String.format("'%s' %s != '%s'\n", iter.type().string(), Arrays.toString(iter.type().string().getBytes(StandardCharsets.UTF_8)), "lww"));

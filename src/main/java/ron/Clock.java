@@ -97,7 +97,7 @@ public class Clock {
 //	}
 
 	private long trim_time(long full, long last) {
-		var i = 5;
+		int i = 5;
 		for (;i < 11 && ((full & PREFIX_MASKS[i]) <= last);) {
 			i++;
 		}
@@ -173,8 +173,8 @@ public class Clock {
 		int days = (int) (v & 63);
 		v = v >> 6;
 		int months = (int) (v & 4095);
-		var month = months % 12;
-		var year = months / 12;
+		int month = months % 12;
+		int year = months / 12;
 		return LocalDateTime.of(year + 2010, month + 1, days + 1, hours, mins, secs, ns100 * 100).atZone(ZoneOffset.UTC);
 	}
 }

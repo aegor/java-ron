@@ -33,7 +33,7 @@ public class Lww implements Reducer {
 		} else {
 			spec.setRef(DELTA_UUID);
 		}
-		for (var k = 0; k < inputs.frames.length; k++) {
+		for (int k = 0; k < inputs.frames.length; k++) {
 			heap.putFrame(inputs.frames[k]);
 		}
 		Frame res = new Frame();

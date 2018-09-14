@@ -487,7 +487,7 @@ public class Frame {
 
 	public void appendReduced(Frame other) {
 		other = other.clone();
-		var tmpTerm = other.term;
+	 	int tmpTerm = other.term;
 		other.term = TERM_REDUCED;
 		this.append(other);
 		other.term = tmpTerm;

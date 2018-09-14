@@ -32,7 +32,7 @@ public class VV implements Reducer {
 				UUID.ZERO_UUID
 				);
 		this.heap.putAll(batch);
-		var re = Frame.newFrame();
+		Frame re = Frame.newFrame();
 		re.appendStateHeader(spec);
 		for (;!this.heap.eof();) {
 			spec.spec[Const.SPEC_EVENT] = this.heap.current().atoms()[Const.SPEC_EVENT];

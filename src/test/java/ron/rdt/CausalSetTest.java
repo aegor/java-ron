@@ -2,6 +2,8 @@ package ron.rdt;
 
 import org.junit.Assert;
 import org.junit.Test;
+import ron.Batch;
+import ron.Frame;
 import ron.Parse;
 
 import java.util.Arrays;
@@ -10,7 +12,7 @@ public class CausalSetTest {
 
 	@Test
 	public void TestCausalSet_Reduce() {
-		var tests = new String[][]{
+		String[][] tests = new String[][]{
 			{
 				"*cas#test1@1=1",
 						"*cas#test1@2=2",
@@ -51,12 +53,12 @@ public class CausalSetTest {
 						"*cas#repeat@1!@=2",
 			},
 		};
-		var cs = CausalSet.makeCausalSetReducer();
-		for (var i = 0; i < tests.length; i++) {
-			var test = tests[i];
-			var inputs = Arrays.copyOfRange(test, 0, test.length - 1);
-			var batch = Parse.parseStringBatch(inputs);
-			var result = cs.reduce(batch);
+		Reducer cs = CausalSet.makeCausalSetReducer();
+		for (int i = 0; i < tests.length; i++) {
+			String[] test = tests[i];
+			String[] inputs = Arrays.copyOfRange(test, 0, test.length - 1);
+			Batch batch = Parse.parseStringBatch(inputs);
+			Frame result = cs.reduce(batch);
 			if (!result.string().equals(test[test.length - 1])) {
 				Assert.fail(String.format("%d cset reduce fail, got\n'%s' want\n'%s'\n", i, result.string(), test[test.length - 1]));
 			}

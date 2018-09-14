@@ -22,7 +22,7 @@ public class LogTest {
 		Batch batch = Parse.parseStringBatch(vvs);
 		Reducer log = Log.makeLogReducer();
 		Frame res = log.reduce(batch);
-		var correct = "*lww#id@3+C!:c=3@2+B:b=2@1+A:a=1";
+		String correct = "*lww#id@3+C!:c=3@2+B:b=2@1+A:a=1";
 		if (!res.string().equals(correct)) {
 			Assert.fail(String.format("got \n%s != \n%s\n", res.string(), correct));
 		}

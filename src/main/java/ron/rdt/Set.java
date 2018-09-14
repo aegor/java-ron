@@ -24,7 +24,7 @@ public class Set implements Reducer {
 	@Override
 	public Frame reduce(Batch batch) {
 		Frame ret = Frame.makeFrame(batch.frames.length);
-		var ref = Lww.DELTA_UUID;
+		UUID ref = Lww.DELTA_UUID;
 		if (batch.hasFullState()) {
 			ref = UUID.ZERO_UUID;
 		}

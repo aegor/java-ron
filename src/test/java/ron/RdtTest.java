@@ -41,7 +41,7 @@ public class RdtTest {
 
 			System.out.println(q.getString(0) + "?..");
 
-			var l = 0;
+			int l = 0;
 			for (;script.frames.length > l && !script.frames[l].isComment();) {
 				l++;
 			}

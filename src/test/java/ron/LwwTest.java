@@ -49,7 +49,7 @@ public class LwwTest {
 
 	@Test
 	public void TestLWW_Reduce() {
-		for (var i = 0; i < lww_3_tests.length; i++) {
+		for (int i = 0; i < lww_3_tests.length; i++) {
 			String[] test = lww_3_tests[i];
 			String C = test[2];
 			Frame[] frames = new Frame[] {
